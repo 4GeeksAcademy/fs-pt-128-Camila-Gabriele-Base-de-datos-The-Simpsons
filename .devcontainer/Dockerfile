@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/python:3.13
-
+RUN rm -f /etc/apt/sources.list.d/yarn.list
 ENV PYTHONUNBUFFERED 1
 
 # [Optional] If your requirements rarely change, uncomment this section to add them to the image.
