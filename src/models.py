@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, String, ForeignKey, Column , Table
+from sqlalchemy import Integer, String, ForeignKey, Column, Table
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -23,19 +23,20 @@ favorite_locations = Table(
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(128), nullable=False)
-    
+
     favorite_characters: Mapped[list["Character"]] = db.relationship(
         "Character",
-        secondary = favorite_characters,
-        back_populates = "favorited_by_user"
-        )
-    favorite_locactions: Mapped[list["Location"]] = db.relationship(
-        "Location", 
-        secondary = favorite_locations,
+        secondary=favorite_characters,
         back_populates="favorited_by_user"
-        )
+    )
+    favorite_locations: Mapped[list["Location"]] = db.relationship(
+        "Location",
+        secondary=favorite_locations,
+        back_populates="favorited_by_user"
+    )
 
     def serialize(self):
         return {
@@ -78,7 +79,7 @@ class Location(db.Model):
     favorited_by_user: Mapped[list["User"]] = db.relationship(
         "User",
         secondary=favorite_locations,
-        back_populates="favorite_locactions"
+        back_populates="favorite_locations"
     )
 
     def serialize(self):
